@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>this 的四种绑定规则</p>
+    <button class="nor">normal</button> <button class="arrow">arrow</button>
+  </body>
+  <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+  <script>
+    //this的4种绑定规则分别是：默认绑定、隐式绑定、显示绑定、new 绑定。优先级从低到高。
+
+    //this的指向在函数创建的时候是决定不了的，在调用的时候才能决定，谁调用的就指向谁
+    // 1.函数直接作为某对象的方法被调用则函数的this指向该对象。（隐式调用）
+    // 2.函数作为函数直接独立调用（不是某对象的方法），或是函数中的函数，其this指向window。（默认绑定）
+
+    
+
+    // 情况1：如果一个函数中有this，但是它没有被上一级的**对象**所调用，那么this指向的就是window
+    //此情况为默认绑定。
+    var msg = '全局msg'; 
+    //ps:let声明的变量竟然不在Window对象(Global作用域) 而是存在于Scope作用域链上的名为Script的作用域
+    //只有用 var 定义的全局变量才可以在 window 对象上访问到，而 let 和 const 则访问不到。但是它们确实是一个全局变量，可以直接通过变量名访问到
+    function a() {
+      let msg = '普通函数在window下定义';
+      console.log('相当于window下的全局msg',this.msg); //undefined
+      console.log(this); //Window
+    }
+    a(); //window.a();
+
+    // 情况2：如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。
+    const o = {
+      msg: '对象下的msg',
+      fn: function() {
+        console.log(this.msg);
+      }
+    };
+    o.fn(); //调用这个fn是通过o.fn()执行的，那自然指向就是对象o
+
+    // 情况3：如果一个函数中有this，这个函数中包含多个**对象**，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象
+    const o2 = {
+      check:function(){
+        console.log(this);
+      },
+      a: 10,
+      b: {
+        // a:12,
+        fn: function() {
+          console.log('只能指向上级对象',this.a); //undefined
+        }
+      }
+    };
+    o2.check();
+    // console.log(o2);
+    o2.b.fn(); //尽管对象b中没有属性a，这个this指向的也是对象b，因为this只会指向它的上一级对象，不管这个对象中有没有this要的东西。
+    
+    const o3 = {
+      a: 10,
+      b: this.a,
+      fn: function() {
+          console.log('对象',this.b); //undefined
+        }
+    };
+    o3.fn();
+
+    //*函数中函数*，这里嵌套了个外围函数）这里也是指向window对象，也相当于函数作为函数调用，就是独立运行。
+    //其实这个例子也说明闭包的this指向Window。
+    //out外围函数
+    function out() {
+      //iin函数在里面
+      function iin() {
+        console.log('iin',this);
+      }
+      //虽然在函数中，但iin函数独立运行,不是那个对象的方法
+      iin();
+    }
+    out(); //window
+
+    // 构造函数   最优先级的new绑定
+
+
+
+//     总结
+// this是函数执行的上下文对象；
+// 根据函数调用的方式不同this的值也不同：
+
+// 1.以函数的形式调用，this是window
+// 2.以方法的形式调用，this是调用方法的对象
+// 3.以构造函数的形式调用，this是新创建的那个对象
+// 4.使用call和apply调用的函数，第一个参数就是this
+// 5.在全局作用域中，this是window
+// 6.在响应函数中，给谁绑定的事件this就是谁。
+// 在事件处理函数中：获取触发当前事件的元素；
+
+// 在普通函数中（直接调用）：获取的是window对象；
+
+// 作为对象的方法中：获取的是当前对象。
+
+// 在全局作用域中：this指代window对象。
+
+// 构造函数中的this：指代创建的对象。
+
+// 注意：
+
+// 当调用方式不同时，this指代的含义不同，得到的结果也不同。
+// this本身不具备任何含义。
+
+  </script>
+</html>
