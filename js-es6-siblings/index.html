@@ -1,46 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <div class="parents">
-    <div class="child1">111</div>
-    <div class="child2">222</div>
-    <div class="child3">333</div>
-    <div class="child4">444</div>
-    <div class="child5">555</div>
-    <div class="child6">666</div>
-    <div class="child7">7777</div>
-  </div>
-  <script>
-    var oChild5 = document.getElementsByClassName('child5');
-    // console.log(oChild5[0].previousSibling);
-    function siblings(el) {
-      var siblingsArr = [];
-      var prev = el.previousSibling;
-      var next = el.nextSibling;
-      while(prev){
-        if(prev.nodeType == 1){
-          siblingsArr.unshift(prev);
-          // console.log(siblingsArr);
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="parents">
+      <div class="child1">111</div>
+      <div class="child2">222</div>
+      <div class="child3">333</div>
+      <div class="child4">444</div>
+      <div class="child5">555</div>
+      <div class="child6">666</div>
+      <div class="child7">7777</div>
+    </div>
+    <script>
+      var oChild5 = document.getElementsByClassName('child5');
+      // console.log(oChild5[0].previousSibling);
+      function siblings(el) {
+        var siblingsArr = [];
+        var prev = el.previousSibling;
+        var next = el.nextSibling;
+        while (prev) {
+          if (prev.nodeType == 1) {
+            siblingsArr.unshift(prev);
+            // console.log(siblingsArr);
+          }
           prev = prev.previousSibling;
-      }
-      while(next){
-        if(next.nodeType == 1){
-          siblingsArr.push(next);
-          // console.log(siblingsArr);
         }
-        next = next.nextSibling;
+        while (next) {
+          if (next.nodeType == 1) {
+            siblingsArr.push(next);
+            // console.log(siblingsArr);
+          }
+          next = next.nextSibling;
+        }
+        console.log(siblingsArr);
       }
-      console.log(siblingsArr);
-    }
 
-    siblings(oChild5[0]);
-  </script>
-</body>
+      siblings(oChild5[0]);
+
+      // // Native - latest, Edge13+
+      // [...el.parentNode.children].filter(child => child !== el);
+      // // Native (alternative) - latest, Edge13+
+      // Array.from(el.parentNode.children).filter(child => child !== el);
+      // // Native - IE10+
+      // Array.prototype.filter.call(
+      //   el.parentNode.children,
+      //   child => child !== el
+      // );
+    </script>
+  </body>
 </html>
