@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function makeIterator(array) {
+      var nextIndex = 0
+      return { //返回的是对象  对象里有一个next方法
+        next: function () {
+          nextIndex < array.length ? {
+            value: array[nextIndex++],
+            done: false
+          } : {
+            value: undefined,
+            done: true,
+          }
+        }
+      }
+    }
+
+    let ary = [1, 2, 3]
+    console.log(ary);
+    console.log('Symbol', ary[Symbol.iterator]); //ƒ values() { [native code] }
+    console.log('values', ary.values); //ƒ values() { [native code] }
+    for (let item of ary) {
+      console.log(item);
+    }
+    console.log('values', ary.values()); //ps 不加括号是返回此属性 加了括号就是返回执行后的返回值
+    let iteratorItem = ary.values();
+    console.log(iteratorItem.next());
+    console.log(iteratorItem.next());
+    console.log(iteratorItem.next());
+    console.log(iteratorItem.next());
+
+    //不能遍历的对象 可以自己给其加上 加在原型上就可以
+    let o = {
+      a: 1,
+      b: 2,
+      c: 3,
+      length: 3
+    }
+    o._proto_[Symbol.iterator] = Array.prototype[Symbol.iterator];
+  </script>
+</body>
+
+</html>
