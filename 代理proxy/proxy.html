@@ -29,13 +29,49 @@
     // console.log(proxy1.name);
 
     let proxy2 = new Proxy(obj, {
-      getReal(target, prop) {
+      get(target, prop) {
         //获取真实内容
         console.log(arguments);
         return target[prop];
+      },
+      set(target, prop, value) {
+        target[prop] = value;
       }
     })
     console.log(proxy2.age);
+    proxy2.age = 18;
+    console.log(proxy2.age);
+    console.log(Object.getOwnPropertyDescriptor(obj, 'name'));
+    /*
+    {value: "明星真名", writable: true, enumerable: true, configurable: true}
+    configurable: true 是否可配置（删除这个属性）
+    enumerable: true  是否可枚举
+    value: "明星真名"
+    writable: true  是否可修改
+    __proto__: Object
+    */
+    console.log(Object.getOwnPropertyDescriptor([1, 2, 3], 'length'));
+    /*
+    {value: 3, writable: true, enumerable: false, configurable: false}
+    configurable: false
+    enumerable: false
+    value: 3
+    writable: true
+    __proto__: Object
+    */
+
+    //可以通过defineProperty来修改
+    Object.defineProperty(obj, 'name', {
+      configurable: false,
+      enumerable: false,
+      value: '改名字了',
+      writable: false,
+      __proto__: Object
+    })
+
+    //此时不可修改了
+    obj.name = '再次修改名字';
+    console.log(obj.name);
   </script>
 </body>
 
