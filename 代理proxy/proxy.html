@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //代理 不直接调用 安全。
+    let obj = {
+      name: '明星真名',
+      age: 33,
+    }
+    //proxy 相当于经纪人 一个中间媒介的代理
+    //new proxy(target，{方法})
+
+    let proxy1 = new Proxy(obj, {
+      //获取属性名的属性值时候就会触发get
+      get(target, prop) {
+        console.log('这里是经纪人');
+        return '明星艺名';
+      }
+    })
+    //这里的name 被拦截改写了
+    // console.log(proxy1.name);
+
+    let proxy2 = new Proxy(obj, {
+      getReal(target, prop) {
+        //获取真实内容
+        console.log(arguments);
+        return target[prop];
+      }
+    })
+    console.log(proxy2.age);
+  </script>
+</body>
+
+</html>
